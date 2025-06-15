@@ -1,71 +1,47 @@
 /**
- * Conditionally inserts elements into arrays or properties into objects.
- *
- * Can be used in two modes:
- *
- * ### Array Mode
- * - Returns an array of items if `condition` is true, otherwise an empty array.
- * - Use with spread operator: `...iif(cond, val)`
+ * Conditionally includes values in an array using the spread operator.
+ * Supports both eager and lazy evaluation.
  *
  * @example
  * const items = [
  *   'a',
- *   ...iif(true, 'b', 'c')  // ['a', 'b', 'c']
+ *   ...iifArray(true, 'b', 'c') // ['a', 'b', 'c']
  * ];
  *
  * @example
- * // Safe lazy evaluation
- * const arr = [
- *   'a',
- *   ...iif(condition, () => computeSomething())
+ * const safe = [
+ *   ...iifArray(user?.enabled, () => getExpensiveValue())
  * ];
  *
- *
- * ### Object Mode
- * - Returns a partial object if `condition` is true, otherwise an empty object.
- * - Only supports one object (or function returning object).
- * - Use with spread operator: `{ ...iif(cond, { key: val }) }`
- *
- * @example
- * const obj = {
- *   name: 'John',
- *   ...iif(true, { role: 'admin' }) // { name: 'John', role: 'admin' }
- * };
- *
- * @example
- * // Safe object property access
- * const obj = {
- *   ...iif(condition, () => ({ deep: nested?.value }))
- * };
- *
- * @param condition - Boolean to decide whether to include values or not
- * @param values - Values or functions that return values (deferred evaluation)
- * @returns Array of elements or partial object based on context
+ * @template T
+ * @param condition - If true, the values are included in the result.
+ * @param values - One or more values or lazy functions that return values.
+ * @returns An array of evaluated values or an empty array.
  */
-export default function iif<T>(condition: boolean, ...values: (T | (() => T))[]): T[] | Partial<T> {
-  if (!condition) {
-    return values.length === 1 && typeof values[0] === 'object' && !Array.isArray(values[0])
-      ? {}
-      : []
-  }
+export function iifArray<T>(condition: boolean, ...values: (T | (() => T))[]): T[] {
+  return condition ? values.map((v) => (typeof v === 'function' ? (v as () => T)() : v)) : []
+}
 
-  // Determine if we're returning an object or array
-  const firstValue = values[0]
-
-  if (
-    values.length === 1 &&
-    (typeof firstValue === 'object' || typeof firstValue === 'function') &&
-    !Array.isArray(typeof firstValue === 'function' ? firstValue() : firstValue)
-  ) {
-    // Object mode
-    return Object.assign(
-      {},
-      ...values.map((v) =>
-        typeof v === 'function' ? (v as () => Partial<T>)() : (v as Partial<T>)
-      )
-    )
-  }
-
-  // Array mode
-  return values.map((v) => (typeof v === 'function' ? (v as () => T)() : v))
+/**
+ * Conditionally includes properties in an object using the spread operator.
+ * Supports both eager and lazy evaluation.
+ *
+ * @example
+ * const obj = {
+ *   id: 1,
+ *   ...iifObject(true, { role: 'admin' }) // { role: 'admin' }
+ * };
+ *
+ * @example
+ * const safe = {
+ *   ...iifObject(config?.enabled, () => ({ debug: true }))
+ * };
+ *
+ * @template T
+ * @param condition - If true, the object is returned.
+ * @param value - An object or a lazy function that returns an object.
+ * @returns A shallow object or an empty object.
+ */
+export function iifObject<T extends object>(condition: boolean, value: T | (() => T)): Partial<T> {
+  return condition ? (typeof value === 'function' ? (value as () => T)() : value) : {}
 }
