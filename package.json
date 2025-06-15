@@ -8,7 +8,6 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "publish": "pnpm build && pnpm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
