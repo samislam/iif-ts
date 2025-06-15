@@ -1,0 +1,27 @@
+{
+  "name": "iif-typescript",
+  "version": "1.0.0",
+  "description": "A tiny utility function to conditionally insert elements into arrays or objects using the spread operator. Supports both eager and deferred evaluation.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "iif",
+    "include-if",
+    "conditional-spread",
+    "typescript",
+    "utility"
+  ],
+  "author": "Islam Yamor",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.1",
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
+}
