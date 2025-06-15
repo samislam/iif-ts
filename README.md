@@ -1,4 +1,4 @@
-# iif
+# iif-ts
 
 > A tiny utility function to conditionally insert elements into arrays or objects using the spread operator. Supports both eager and deferred evaluation.
 
@@ -16,17 +16,17 @@
 ## 💾 Installation
 
 ```bash
-pnpm add iif
+pnpm add iif-ts
 # or
-npm install iif
+npm install iif-ts
 # or
-yarn add iif
+yarn add iif-ts
 
 ## 🔧 Usage
 ### ➤ Arrays
 
 ```ts
-import iif from 'iif'
+import iif from 'iif-ts'
 
 const result = [
   'a',
