@@ -1,6 +1,6 @@
 {
   "name": "iif-ts",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "author": "Islam Yamor",
   "license": "Apache-2.0",
@@ -19,7 +19,13 @@
     "build": "tsx ./scripts/build.ts",
     "format": "tsx ./scripts/format.ts"
   },
-  "keywords": ["typescript", "iif", "include-if", "include-if-typescript", "conditional"], 
+  "keywords": [
+    "typescript",
+    "iif",
+    "include-if",
+    "include-if-typescript",
+    "conditional"
+  ],
   "devDependencies": {
     "@clscripts/barrelsby": "^2.8.1",
     "@clscripts/chokidar-cli": "^4.0.3",
