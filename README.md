@@ -1,106 +1,90 @@
-# 📦 TypeScript NPM Package Starter
-A simple, fast, and modern template for anyone who wants to get up and running quickly writing TypeScript code for an npm package.
+# iif-ts
 
-If you’re creating an npm package — this starter is for you.
-It’s easy, opinionated, and comes with batteries included.
-
-> ⚡ **Note**:  This starter uses [`pnpm`](https://pnpm.io) for package management.
-> Install it globally: `npm install -g pnpm`
-
-
-# 🚀 Features
-
-✅ TypeScript already configured — no hassle.
-
-✅ Prettier with a shared config: [@samislam/prettier-config](https://www.npmjs.com/package/@samislam/prettier-config).
-
-✅ ESLint with sensible defaults.
-
-✅ .gitignore with useful defaults.
-
-✅ package.json ready with scripts and sane defaults.
-
-✅ Jest setup for unit testing.
-
-✅ Uses [clscripts](https://github.com/CommandLineScripts) for clean, human-readable scripts — never memorize messy CLI chains again.
-
-# 📂 Included scripts
-Your package.json already has:
-```json
-"scripts": {
-  "test": "jest",
-  "dev": "tsx ./scripts/dev.ts",
-  "lint": "tsx ./scripts/lint.ts",
-  "clean": "tsx ./scripts/clean.ts",
-  "build": "tsx ./scripts/build.ts",
-  "format": "tsx ./scripts/format.ts"
-}
-```
-## 📜 What each script does
-
-Build your project - Generate barrels, compile your TypeScript, and show clear output:  
-```bash
-pnpm build
-```
-
-Clean up `node_modules`, build output, and lockfiles:  
-```bash
-pnpm clean
-```
-
-Start your dev environment — runs barrels, type-checks, and transpiles fast with Nodemon + Concurrently:  
-```bash
-pnpm dev
-```
-
-Format all your files using Prettier (ignores barrels):  
-```bash
-pnpm format
-```
-
-Run type-checking and ESLint with clear status messages:  
-```bash
-pnpm lint
-```
-
-Run your tests with Jest:  
-```bash
-pnpm test
-```
-
-## ✅ Example flow
-
-```bash
-pnpm install
-pnpm dev
-# Make changes...
-pnpm format
-pnpm lint
-pnpm test
-pnpm build
-```
-
-
-# ✅ How to use
-1. Clone this template or copy the setup into your project.
-2. Install dependencies:
-```bash
-pnpm install
-```
-3. Run pnpm dev to start coding immediately.
-4. Use pnpm build when you’re ready to publish.
-
-# ✨ Why use this?
-✔️ Zero config TypeScript
-✔️ Prettier, ESLint, Jest, barrels — all wired up.
-✔️ clscripts make your CLI commands readable and repeatable.
-✔️ A real-world pattern you can extend — not a throwaway template.
-
-# 📢 License
-Apache-2.0 — do what you want, improve it, share it!
-
-Happy coding! 🚀✨
+> 🧠 A tiny utility for conditional insertion into arrays and objects using the spread operator. Supports lazy evaluation.
 
 ---
 
-Islam Yamor.
+## ✨ Features
+
+- ✅ Drop-in use with `...spread`
+- ✅ Supports arrays (`iifArray`) and objects (`iifObject`)
+- ✅ Lazy evaluation with functions
+- ✅ Zero runtime dependencies
+- ✅ Fully typed with TypeScript
+
+---
+
+## 💾 Installation
+
+```bash
+pnpm add iif-ts
+# or
+npm install iif-ts
+# or
+yarn add iif-ts
+```
+
+## 🔧 Usage
+
+### ➤ Arrays: iifArray
+
+```ts
+import { iifArray } from 'iif-ts'
+
+const arr = [
+  'a',
+  ...iifArray(true, 'b', 'c'), // ['b', 'c']
+]
+
+const lazy = [...iifArray(condition, () => computeHeavyValue())]
+```
+
+### ➤ Objects: iifObject
+
+```ts
+import { iifObject } from 'iif-ts'
+
+const obj = {
+  name: 'Islam',
+  ...iifObject(true, { role: 'admin' }), // adds "role" if true
+}
+
+const safe = {
+  ...iifObject(user?.active, () => ({ token: user.token })),
+}
+```
+
+## 📚 API
+
+```ts
+iifArray<T>(condition: boolean, ...values: (T | (() => T))[]): T[]
+```
+
+- condition – If true, the values are included.
+- values – One or more values or lazy functions returning values.
+- ✅ Returns an array or empty array.
+
+```ts
+iifObject<T>(condition: boolean, value: T | (() => T)): Partial<T>
+```
+
+- condition – If true, the object is returned.
+- value – An object or a lazy function returning one.
+- ✅ Returns an object or {}.
+
+## 🛠 Example with JSX (React)
+
+```ts
+{...iifObject(isDev, { 'data-dev': true })}
+{...iifArray(showTooltip, 'aria-label')}
+```
+
+## 🧪 Testing
+
+This package is fully covered by TypeScript type checks. For full runtime tests, add your own test framework like Vitest or Jest.
+
+## 📄 License
+
+MIT © Islam Yamor
+
+---
