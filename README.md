@@ -85,6 +85,6 @@ This package is fully covered by TypeScript type checks. For full runtime tests,
 
 ## 📄 License
 
-MIT © Islam Yamor
+Apache-2.0 © Islam Yamor
 
 ---
